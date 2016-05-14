@@ -8,6 +8,13 @@ uint8_t TMS_PIN;
 uint8_t TCK_PIN;
 bool found;
 
+/*
+#define A2 8
+#define A3 9
+#define A4 10
+#define A5 11
+*/
+
 // Uses pins A2-A5, but they can be changed to any other digital or analog pins.
 uint8_t permutations[2*3*4][4] = {
   {A2, A3, A4, A5},
@@ -57,7 +64,7 @@ void setup() {
     ;
 }
 
-int clock(int tms, int tdi =  TDI_LOW) {
+int clock(int tms, int tdi = TDI_LOW) {
   // read last output
   digitalWrite(TCK_PIN, TCK_LOW);
   const int r = digitalRead(TDO_PIN) == TDO_HIGH;
@@ -120,10 +127,10 @@ bool detect_chain(unsigned &ilen, unsigned &dlen) {
   return true;
 }
 
-unsigned read(unsigned n) {
-  unsigned r = 0;
+uint32_t read(unsigned n) {
+  uint32_t r = 0;
   for (unsigned i = 0; i < n; i++)
-    r |= tms_tdi() << i;
+    r |= uint32_t(tms_tdi()) << i;
   return r;
 }
 
